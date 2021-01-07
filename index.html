@@ -18,9 +18,9 @@
         <div class="steps-content">{{ showStepText }}</div>
         <ul class="steps-list">
           <li v-for="(step, idx) in steps"
-              :class="['steps-item', {active: idx === activeIndex}]"
+              :class="setActiveButton(idx)"
               :key="step.title"
-              @click="setActive(idx, step)">
+              @click="setActive(idx)">
             <span>{{idx + 1}}</span> {{step.title}}
           </li>
         </ul>

@@ -6,8 +6,6 @@ const App = {
     data() {
         return {
             restartCircle: false,
-            active: false,
-            done: false,
             activeIndex: 0,
             steps: [{
                     title: 'Основы',
@@ -62,9 +60,21 @@ const App = {
             this.activeIndex = 0;
             this.restartCircle = false;
         },
-        setActive(idx, step) {
+        setActive(idx) {
             this.activeIndex = idx;
-            console.log(step);
+        },
+        setActiveButton(idx) {
+            if (this.restartCircle) {
+                return ['steps-item', {
+                    done: idx <= this.activeIndex
+                  }]
+            } else {
+                return ['steps-item', {
+                    active: idx === this.activeIndex,
+                    done: idx < this.activeIndex
+                  }]
+            }
+            
         }
     }
 }
