@@ -3,29 +3,13 @@
 // ваша задача реализовать так, как показано на видео, чтобы оно работало
 
 const App = {
-    template: `
-    <div class="card">
-      <h1>План по изучению Vue.js</h1>
-    
-      <div class="steps">
-        <div class="steps-content">texttext</div>
-        <ul class="steps-list">
-          <li :class="['steps-item']"
-              v-for="(step, idx) in steps">
-            <span>{{idx + 1}}</span>{{step.title}}
-          </li>
-        </ul>
-        <div>
-          <button class="btn">Назад</button>
-          <button class="btn primary">Вперед</button>
-        </div>
-      </div>
-    </div>`,
     data() {
         return {
-            activeIndex: 0, // то, что позволяет определить текущий активный шаг
-            steps: [
-                {
+            restartCircle: false,
+            active: false,
+            done: false,
+            activeIndex: 0,
+            steps: [{
                     title: 'Основы',
                     text: 'В блоке вы познакомитесь со всеми основами Vue.js на практике. На протяжении блока мы напишем реактивное приложение, в процессе разработки которого разберем вся базу фреймворка.'
                 },
@@ -48,25 +32,40 @@ const App = {
             ]
         }
     },
+    computed: {
+        showStepText() {
+            return this.steps[this.activeIndex].text;
+        },
+        manageBackButton() {
+            return this.activeIndex <= 0;
+        },
+        showNextBtn() {
+            if (this.activeIndex + 1 === this.steps.length) {
+                return 'Закончить'
+            } else {
+                return 'Вперед'
+            }
+        },
+    },
     methods: {
         prev() {
-            // когда нажимаем кнопку назад
+            this.activeIndex--
+        },
+        next() {
+            if (this.steps.length === this.activeIndex + 1) {
+                this.restartCircle = true;
+            } else {
+                this.activeIndex++
+            }
         },
         reset() {
-            // начать заново
+            this.activeIndex = 0;
+            this.restartCircle = false;
         },
-        nextOfFinish() {
-            // кнопка вперед или закончить
-        },
-        setActive(idx) {
-            // когда нажимаем на определенный шаг
+        setActive(idx, step) {
+            this.activeIndex = idx;
+            console.log(step);
         }
-    },
-    computed: {
-        // тут стоит определить несколько свойств:
-        // 1. текущий выбранный шаг
-        // 2. выключена ли кнопка назад
-        // 3. находимся ли мы на последнем шаге
     }
 }
 
