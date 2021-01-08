@@ -1,12 +1,9 @@
-// вы можете как угодно изменять программу и код
-// добавлять любые переменные и модели
-// ваша задача реализовать так, как показано на видео, чтобы оно работало
-
 const App = {
     data() {
         return {
-            restartCircle: false,
             activeIndex: 0,
+            isLastTab: false,
+            restartCircle: false,
             steps: [{
                     title: 'Основы',
                     text: 'В блоке вы познакомитесь со всеми основами Vue.js на практике. На протяжении блока мы напишем реактивное приложение, в процессе разработки которого разберем вся базу фреймворка.'
@@ -38,43 +35,35 @@ const App = {
             return this.activeIndex <= 0;
         },
         showNextBtn() {
-            if (this.activeIndex + 1 === this.steps.length) {
-                return 'Закончить'
-            } else {
-                return 'Вперед'
-            }
+            return this.isLastTab ? 'Закончить' : 'Вперед';
         },
     },
     methods: {
         prev() {
-            this.activeIndex--
+            if (this.isLastTab) {
+                this.isLastTab = false;
+                this.activeIndex--;
+            } else if (this.activeIndex !== 0) {
+                this.activeIndex--;
+            }
         },
         next() {
-            if (this.steps.length === this.activeIndex + 1) {
+            if (this.isLastTab) {
                 this.restartCircle = true;
+            } else if (this.steps.length === this.activeIndex + 2) {
+                this.isLastTab = true;
+                this.activeIndex++;
             } else {
-                this.activeIndex++
+                this.activeIndex++;
             }
         },
         reset() {
             this.activeIndex = 0;
             this.restartCircle = false;
+            this.isLastTab = false;
         },
         setActive(idx) {
             this.activeIndex = idx;
-        },
-        setActiveButton(idx) {
-            if (this.restartCircle) {
-                return ['steps-item', {
-                    done: idx <= this.activeIndex
-                  }]
-            } else {
-                return ['steps-item', {
-                    active: idx === this.activeIndex,
-                    done: idx < this.activeIndex
-                  }]
-            }
-            
         }
     }
 }
