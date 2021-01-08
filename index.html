@@ -19,8 +19,8 @@
         <ul class="steps-list">
           <li v-for="(step, idx) in steps"
               :class="['steps-item', {
-                active: !restartCircle ? idx === activeIndex : false,
-                done: restartCircle ? idx <= activeIndex : idx < activeIndex
+                active: idx === activeIndex,
+                done: idx < activeIndex
               }]"
               :key="step.title"
               @click="setActive(idx)">
@@ -28,7 +28,7 @@
           </li>
         </ul>
         <div>
-          <div v-if="!restartCircle || !isLastTab">
+          <div v-if="!restartCircle">
             <button class="btn" 
                     :disabled="manageBackButton" 
                     @click="prev">Назад
