@@ -2,7 +2,6 @@ const App = {
     data() {
         return {
             activeIndex: 0,
-            isLastTab: false,
             restartCircle: false,
             steps: [{
                     title: 'Основы',
@@ -28,6 +27,9 @@ const App = {
         }
     },
     computed: {
+        isLastTab() {
+            return this.steps.length === this.activeIndex + 1;
+        },
         showStepText() {
             return this.steps[this.activeIndex].text;
         },
@@ -40,19 +42,13 @@ const App = {
     },
     methods: {
         prev() {
-            if (this.isLastTab) {
-                this.isLastTab = false;
-                this.activeIndex--;
-            } else if (this.activeIndex !== 0) {
+            if (this.activeIndex !== 0) {
                 this.activeIndex--;
             }
         },
         next() {
             if (this.isLastTab) {
                 this.restartCircle = true;
-            } else if (this.steps.length === this.activeIndex + 2) {
-                this.isLastTab = true;
-                this.activeIndex++;
             } else {
                 this.activeIndex++;
             }
@@ -60,7 +56,6 @@ const App = {
         reset() {
             this.activeIndex = 0;
             this.restartCircle = false;
-            this.isLastTab = false;
         },
         setActive(idx) {
             this.activeIndex = idx;
